@@ -1,0 +1,14 @@
+# util.py
+import time
+import os
+import datetime
+
+LOG_FILE = "log.txt"
+
+def registrar_log(mensagem):
+    timestamp = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+    texto = f"{timestamp} {mensagem}"
+    print(texto)
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(texto + "\n")
+

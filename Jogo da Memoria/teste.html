@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória com Emojis (Canvas)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        canvas {
+            border: 5px solid #333;
+            background-color: #fff;
+            display: block;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .info {
+            margin-top: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jogo da Memória dos Emojis</h1>
+    <div class="info">Clique em duas cartas para tentar fazer um par!</div>
+
+    <canvas id="memoryCanvas" width="520" height="350"></canvas>
+
+    <button onclick="iniciarJogo()">Reiniciar Jogo</button>
+
+    <script>
+        // --- Configurações do Canvas e Jogo ---
+        const canvas = document.getElementById('memoryCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Seus emojis duplicados para formar os pares
+        const EMOJIS = ['❤️', '✨', '✅', '😂', '⭐', '🌼'];
+        let cards = [...EMOJIS, ...EMOJIS]; 
+        
+        // Dimensões
+        const COLS = 4;
+        const ROWS = 3;
+        const CARD_WIDTH = 120;
+        const CARD_HEIGHT = 100;
+        const PADDING_X = 10;
+        const PADDING_Y = 10;
+        const BORDER_RADIUS = 8;
+        
+        // Estado do Jogo
+        let estadoCartas = []; // Armazena o estado (virada: true/false, combinada: true/false)
+        let cartasViradas = []; // Armazena o índice das duas cartas atualmente viradas
+        let travado = false; // Impede cliques enquanto as cartas estão sendo verificadas
+
+        // --- Funções de Ajuda ---
+
+        // Função para embaralhar o array
+        function embaralhar(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Obtém o centro de um retângulo
+        function centro(x, w) {
+            return x + w / 2;
+        }
+
+        // Desenha um retângulo arredondado
+        function desenharRetanguloArredondado(x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        // --- Funções do Jogo ---
+
+        function iniciarJogo() {
+            // 1. Embaralha os emojis
+            embaralhar(cards);
+
+            // 2. Inicializa o estado das cartas
+            estadoCartas = cards.map(() => ({
+                virada: false, // Inicia virada para baixo
+                combinada: false // Inicia sem par encontrado
+            }));
+            
+            cartasViradas = [];
+            travado = false;
+
+            // 3. Desenha o estado inicial
+            desenharJogo();
+        }
+
+        function desenharCarta(index) {
+            const row = Math.floor(index / COLS);
+            const col = index % COLS;
+            const x = PADDING_X + col * (CARD_WIDTH + PADDING_X);
+            const y = PADDING_Y + row * (CARD_HEIGHT + PADDING_Y);
+            const estado = estadoCartas[index];
+
+            // 1. Fundo da carta (virada para baixo ou combinada)
+            desenharRetanguloArredondado(x, y, CARD_WIDTH, CARD_HEIGHT, BORDER_RADIUS);
+            
+            if (estado.virada || estado.combinada) {
+                // Fundo claro para carta virada/combinada
+                ctx.fillStyle = '#eee'; 
+            } else {
+                // Fundo da carta virada para baixo
+                ctx.fillStyle = '#6495ED'; // Azul legal para a face oculta
+            }
+            ctx.fill();
+            
+            // Borda
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // 2. Conteúdo da carta
+            if (estado.virada || estado.combinada) {
+                // Desenha o emoji
+                const emoji = cards[index];
+                ctx.font = '50px sans-serif'; // Tamanho do emoji
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(emoji, centro(x, CARD_WIDTH), centro(y, CARD_HEIGHT));
+            } else {
+                // Desenha o verso da carta (ponto de interrogação ou símbolo)
+                ctx.font = '30px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#fff';
+                ctx.fillText('?', centro(x, CARD_WIDTH), centro(y, CARD_HEIGHT));
+            }
+
+            // Se combinada, coloca um contorno verde
+            if (estado.combinada) {
+                ctx.strokeStyle = '#4CAF50';
+                ctx.lineWidth = 5;
+                ctx.stroke();
+            }
+        }
+
+        function desenharJogo() {
+            // Limpa o Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Desenha todas as cartas
+            for (let i = 0; i < cards.length; i++) {
+                desenharCarta(i);
+            }
+        }
+
+        // Lógica de clique
+        canvas.addEventListener('click', function(event) {
+            if (travado) return; // Não clica se estiver travado
+
+            // Calcula a posição do clique dentro do Canvas
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            // Encontra qual carta foi clicada (se houver)
+            let cartaClicadaIndex = -1;
+            
+            for (let i = 0; i < cards.length; i++) {
+                const row = Math.floor(i / COLS);
+                const col = i % COLS;
+                const x = PADDING_X + col * (CARD_WIDTH + PADDING_X);
+                const y = PADDING_Y + row * (CARD_HEIGHT + PADDING_Y);
+
+                if (mouseX >= x && mouseX <= x + CARD_WIDTH && 
+                    mouseY >= y && mouseY <= y + CARD_HEIGHT) {
+                    cartaClicadaIndex = i;
+                    break;
+                }
+            }
+
+            if (cartaClicadaIndex !== -1) {
+                clicarCarta(cartaClicadaIndex);
+            }
+        });
+
+        function clicarCarta(index) {
+            const estado = estadoCartas[index];
+
+            // Condições de clique inválido: já virada, já combinada, ou mais de 2 cartas viradas
+            if (estado.virada || estado.combinada || cartasViradas.length >= 2) {
+                return;
+            }
+
+            // Vira a carta
+            estado.virada = true;
+            cartasViradas.push(index);
+
+            // Redesenha para mostrar a carta virada
+            desenharJogo(); 
+
+            if (cartasViradas.length === 2) {
+                travado = true; // Trava para verificar a combinação
+                
+                // Pega o índice das duas cartas viradas
+                const [i1, i2] = cartasViradas;
+                
+                // Verifica se são iguais após um pequeno atraso
+                setTimeout(() => {
+                    if (cards[i1] === cards[i2]) {
+                        // Encontrou um par!
+                        estadoCartas[i1].combinada = true;
+                        estadoCartas[i2].combinada = true;
+                        estadoCartas[i1].virada = true; // Mantém virada
+                        estadoCartas[i2].virada = true; // Mantém virada
+                        
+                        // Verifica se o jogo acabou
+                        if (estadoCartas.every(c => c.combinada)) {
+                            desenharJogo(); // Redesenha com o estado final
+                            setTimeout(() => alert('Parabéns! Você encontrou todos os pares!'), 50);
+                        }
+                    } else {
+                        // Não são iguais, vira para baixo novamente
+                        estadoCartas[i1].virada = false;
+                        estadoCartas[i2].virada = false;
+                    }
+
+                    // Limpa o estado e destrava
+                    cartasViradas = [];
+                    travado = false;
+                    desenharJogo(); // Redesenha com as cartas viradas para baixo (se não for par)
+
+                }, 1000); // 1 segundo para o jogador ver as cartas
+            }
+        }
+
+        // Inicia o jogo quando a página carrega
+        iniciarJogo();
+    </script>
+
+</body>
+</html>

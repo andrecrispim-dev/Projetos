@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(70, 142, 236)
+}
+
+header {
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+main{
+    justify-items: center;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  justify-content: center;
+}
+
+.container h1{
+    text-align: center;
+    margin: 10px;
+}
+
+#dataNasc{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 100px;
+    margin: 0 10px 0 0
+}
+
+#res{
+  margin: 10px;
+  text-align: center;
+}
+
+footer {
+    text-align: center;
+    color: white;
+    padding: 15px;
+}

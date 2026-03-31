@@ -1,0 +1,79 @@
+# Repositorios separados
+WebPDV2/
+WebPDV2 - BKP/
+
+# Dependencias
+node_modules/
+
+# Variaveis de ambiente
+.env
+.env.*
+
+# Saidas de build
+dist/
+build/
+coverage/
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+__pycache__/
+*.pyc
+
+# Arquivos compilados
+*.exe
+*.dll
+*.pdb
+
+# Backups e compactados
+backup/
+* - BKP/
+*.bak
+*.tmp
+*.zip
+*.rar
+
+# Logs
+logs/
+*.log
+
+# Sistema operacional / IDE
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+# Repositorios Git internos
+Finanças/
+HTML-CSS-GPT/
+Landing Page/
+
+# Bancos locais
+*.mdf
+*.ldf
+*.sqlite
+*.db
+*.accdb
+
+# Visual Studio / C# / C++
+.vs/
+*.suo
+*.user
+*.ipch
+
+# Pacotes e chaves locais
+packages/
+*.nupkg
+*.pfx
+
+# Logs e configs locais
+log.txt
+
+# Bancos locais
+*.mdf
+*.ldf
+*.sqlite
+*.db
+*.accdb

@@ -1,0 +1,50 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(70, 142, 236)
+}
+
+header {
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+main{
+    justify-items: center;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  justify-content: center;
+}
+
+.container h1{
+    text-align: center;
+}
+
+#contador {
+  font-size: 60px;
+  margin: 20px 0;
+}
+
+.botoes button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 5px;
+  cursor: pointer;
+  justify-content: center;
+}
+
+footer {
+    text-align: center;
+    color: white;
+    padding: 15px;
+}

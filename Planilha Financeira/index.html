@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilha Financeira Pessoal</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // Verificar se o Chart.js foi carregado corretamente
+        window.addEventListener('load', function () {
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js não foi carregado corretamente');
+                // Tentar carregar novamente
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
+                script.onload = function () {
+                    console.log('Chart.js carregado com sucesso');
+                };
+                script.onerror = function () {
+                    console.error('Falha ao carregar Chart.js');
+                };
+                document.head.appendChild(script);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>💰 Controle Financeiro Pessoal</h1>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('entradas', event)">📈 Entradas</button>
+            <button class="tab" onclick="showTab('saidas', event)">📉 Saídas</button>
+            <button class="tab" onclick="showTab('cartoes', event)">💳 Cartões</button>
+            <button class="tab" onclick="showTab('resumo', event)">📊 Resumo</button>
+            <button class="tab" onclick="showTab('graficos', event)">📋 Gráficos</button>
+        </div>
+
+        <!-- ABA ENTRADAS -->
+        <div id="entradas" class="tab-content active">
+            <div class="form-section">
+                <h3>Adicionar Entrada</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Data:</label>
+                        <input type="date" id="dataEntrada" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo:</label>
+                        <select id="tipoEntrada" required>
+                            <option value="">Selecione...</option>
+                            <option value="Salário">Salário</option>
+                            <option value="Horas Extras">Horas Extras</option>
+                            <option value="Bônus">Bônus</option>
+                            <option value="Férias">Férias</option>
+                            <option value="13º Salário">13º Salário</option>
+                            <option value="Freelance">Freelance</option>
+                            <option value="Investimentos">Investimentos</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <input type="text" id="descricaoEntrada" placeholder="Descrição da entrada">
+                    </div>
+                    <div class="form-group">
+                        <label>Valor (R$):</label>
+                        <input type="number" id="valorEntrada" step="0.01" min="0" placeholder="0,00" required>
+                    </div>
+                </div>
+                <button onclick="adicionarEntrada()">Adicionar Entrada</button>
+            </div>
+
+            <div class="form-section">
+                <h3>Histórico de Entradas</h3>
+                <table id="tabelaEntradas">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABA SAÍDAS -->
+        <div id="saidas" class="tab-content">
+            <div class="form-section">
+                <h3>Adicionar Saída</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Data:</label>
+                        <input type="date" id="dataSaida" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo:</label>
+                        <select id="tipoSaida" onchange="atualizarCategorias()" required>
+                            <option value="">Selecione...</option>
+                            <option value="Despesa Fixa">Despesa Fixa</option>
+                            <option value="Cartão de Crédito">Cartão de Crédito</option>
+                            <option value="Despesa Esporádica">Despesa Esporádica</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria:</label>
+                        <select id="categoriaSaida" required>
+                            <option value="">Selecione o tipo primeiro...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <input type="text" id="descricaoSaida" placeholder="Descrição da despesa" required>
+                    </div>
+                    <div class="form-group" id="cartaoGroup" style="display: none;">
+                        <label>Cartão de Crédito:</label>
+                        <select id="cartaoSaida">
+                            <option value="">Selecione um cartão...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Valor (R$):</label>
+                        <input type="number" id="valorSaida" step="0.01" min="0" placeholder="0,00" required>
+                    </div>
+                </div>
+                <button onclick="adicionarSaida()">Adicionar Saída</button>
+            </div>
+
+            <div class="form-section">
+                <h3>Histórico de Saídas</h3>
+                <table id="tabelaSaidas">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Categoria</th>
+                            <th>Descrição</th>
+                            <th>Cartão</th>
+                            <th>Valor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABA CARTÕES -->
+        <div id="cartoes" class="tab-content">
+            <div class="form-section">
+                <h3>Adicionar Cartão de Crédito</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nome do Cartão:</label>
+                        <input type="text" id="nomeCartao" placeholder="Ex: Nubank, Itaú, etc." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Limite (R$):</label>
+                        <input type="number" id="limiteCartao" step="0.01" min="0" placeholder="0,00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Dia do Vencimento:</label>
+                        <input type="number" id="vencimentoCartao" min="1" max="31" placeholder="Ex: 15" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cor de Identificação:</label>
+                        <input type="color" id="corCartao" value="#007bff">
+                    </div>
+                </div>
+                <button onclick="adicionarCartao()">Adicionar Cartão</button>
+            </div>
+
+            <div class="form-section">
+                <h3>Meus Cartões de Crédito</h3>
+                <div id="cartoesGrid" class="cartoes-grid">
+                    <!-- Cartões serão exibidos aqui -->
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Resumo por Cartão</h3>
+                <table id="tabelaResumoCartoes">
+                    <thead>
+                        <tr>
+                            <th>Cartão</th>
+                            <th>Gasto Atual</th>
+                            <th>Limite</th>
+                            <th>Disponível</th>
+                            <th>% Utilizado</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABA RESUMO -->
+        <div id="resumo" class="tab-content">
+            <div class="form-section">
+                <h3>Filtrar por Período</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Mês/Ano:</label>
+                        <input type="month" id="filtroMes" onchange="atualizarResumo()">
+                    </div>
+                    <div class="form-group">
+                        <button onclick="atualizarResumo()">Atualizar Resumo</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="totals-grid" id="cardsResumo">
+                <!-- Cards de resumo serão gerados dinamicamente -->
+            </div>
+
+            <div class="form-section">
+                <h3>Resumo por Categoria</h3>
+                <table id="tabelaResumoCategoria">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Total</th>
+                            <th>% do Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABA GRÁFICOS -->
+        <div id="graficos" class="tab-content">
+            <div class="chart-container">
+                <h4>Entradas vs Saídas por Mês</h4>
+                <canvas id="graficoEntradasSaidas"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h4>Distribuição de Gastos por Categoria</h4>
+                <canvas id="graficoCategorias"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h4>Evolução do Saldo</h4>
+                <canvas id="graficoSaldo"></canvas>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <button class="export-btn" onclick="exportarCSV()">📁 Exportar CSV</button>
+            <button class="export-btn" onclick="exportarJSON()">💾 Exportar JSON</button>
+            <button class="export-btn" onclick="imprimirRelatorio()">🖨️ Imprimir Relatório</button>
+            <button class="export-btn" onclick="limparTodosDados()"
+                style="background: linear-gradient(135deg, #dc3545, #c82333);">🗑️ Limpar Todos os Dados</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

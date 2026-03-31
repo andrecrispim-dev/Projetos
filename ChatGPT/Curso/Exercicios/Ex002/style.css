@@ -1,0 +1,19 @@
+body {
+    background-color: #fafafa;
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .caixa {
+    background-color: #e0f7fa;
+    padding: 20px;
+    border: 2px solid #00acc1;
+    margin: 30px 0;
+  }
