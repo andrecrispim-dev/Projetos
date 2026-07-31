@@ -1,186 +1,91 @@
-# 💰 Planilha Financeira Pessoal
+# Planilha Financeira — Contas a Pagar e Receber
 
-Uma aplicação web completa para controle financeiro pessoal, desenvolvida em HTML, CSS e JavaScript puro.
+Sistema web para controlar **contas a pagar** e **contas a receber**: vencimentos, status de pagamento, categorias, relatórios e backup.
 
-## 🚀 Funcionalidades
+O aplicativo em uso está em **`controle-financeiro/`** (API Node.js + frontend React + SQLite).
 
-### 📈 Gestão de Entradas
-- Adicionar diferentes tipos de entradas (Salário, Horas Extras, Bônus, etc.)
-- Histórico completo de entradas
-- Edição e exclusão de registros
+> Os arquivos na raiz (`index.html`, `script.js`, `styles.css`, `exemplo-uso.md`) são um **protótipo antigo** em HTML/JS com `localStorage`. Não fazem parte do fluxo atual.
 
-### 📉 Gestão de Saídas
-- Categorização por tipo (Despesa Fixa, Cartão de Crédito, Despesa Esporádica)
-- Subcategorias específicas para cada tipo
-- Controle detalhado de gastos
-
-### 📊 Resumo e Análises
-- Resumo mensal com filtros por período
-- Cards visuais com totais de entradas, saídas e saldo
-- Análise por categoria com percentuais
-
-### 📋 Gráficos Interativos
-- Gráfico de barras: Entradas vs Saídas por mês
-- Gráfico de pizza: Distribuição de gastos por categoria
-- Gráfico de linha: Evolução do saldo acumulado
-
-### 💾 Exportação de Dados
-- Exportação em formato CSV
-- Exportação em formato JSON
-- Relatório para impressão
-- Backup automático no navegador (localStorage)
-
-## 🛠️ Tecnologias Utilizadas
-
-- **HTML5**: Estrutura semântica e responsiva
-- **CSS3**: Design moderno com gradientes e animações
-- **JavaScript ES6+**: Lógica da aplicação
-- **Chart.js**: Gráficos interativos
-- **LocalStorage**: Armazenamento local dos dados
-
-## 📱 Responsividade
-
-A aplicação é totalmente responsiva e funciona perfeitamente em:
-- Desktop
-- Tablet
-- Smartphone
-
-## 🎨 Design
-
-- Interface moderna e intuitiva
-- Cores harmoniosas e profissionais
-- Animações suaves
-- Feedback visual para todas as ações
-- Notificações em tempo real
-
-## 🚀 Como Usar
-
-### Instalação
-1. Clone ou baixe os arquivos
-2. Abra o arquivo `index.html` em qualquer navegador moderno
-3. Ou execute um servidor local:
-   ```bash
-   python -m http.server 8000
-   ```
-   E acesse `http://localhost:8000`
-
-### Primeiros Passos
-1. **Adicionar Entradas**: Vá para a aba "Entradas" e preencha os dados
-2. **Adicionar Saídas**: Vá para a aba "Saídas", selecione o tipo e categoria
-3. **Visualizar Resumo**: A aba "Resumo" mostra os totais e análises
-4. **Analisar Gráficos**: A aba "Gráficos" oferece visualizações interativas
-
-### Funcionalidades Avançadas
-- **Filtros**: Use o filtro de mês/ano para analisar períodos específicos
-- **Exportação**: Exporte seus dados em CSV ou JSON
-- **Impressão**: Gere relatórios para impressão
-- **Backup**: Os dados são salvos automaticamente no navegador
-
-## 📊 Categorias Disponíveis
-
-### Entradas
-- Salário
-- Horas Extras
-- Bônus
-- Férias
-- 13º Salário
-- Freelance
-- Investimentos
-- Outros
-
-### Saídas por Tipo
-
-#### Despesa Fixa
-- Habitação
-- Transporte
-- Seguros
-- Educação
-- Saúde
-- Outros
-
-#### Cartão de Crédito
-- Alimentação
-- Compras
-- Entretenimento
-- Saúde
-- Transporte
-- Educação
-- Outros
-
-#### Despesa Esporádica
-- Alimentação
-- Transporte
-- Entretenimento
-- Presentes
-- Saúde
-- Educação
-- Outros
-
-## 🔧 Recursos Técnicos
-
-### Validações
-- Campos obrigatórios
-- Valores numéricos válidos
-- Datas válidas
-- Feedback de erros
-
-### Performance
-- Carregamento rápido
-- Otimização de memória
-- Destruição adequada de gráficos
-
-### Segurança
-- Validação de entrada
-- Sanitização de dados
-- Tratamento de erros
-
-## 🐛 Correções Implementadas
-
-### Problemas Corrigidos
-1. **Script não carregado**: Adicionada tag de fechamento `</script>`
-2. **Função showTab**: Corrigido parâmetro `event` não definido
-3. **Inicialização**: Melhorada a inicialização com verificações de segurança
-4. **Validações**: Adicionadas validações robustas para todos os campos
-5. **Tratamento de Erros**: Implementado try-catch em todas as funções críticas
-6. **Feedback Visual**: Adicionadas notificações para todas as ações
-7. **Responsividade**: Melhorada a experiência em dispositivos móveis
-
-### Melhorias Adicionadas
-- Sistema de notificações em tempo real
-- IDs únicos mais robustos
-- Verificação de elementos DOM antes de uso
-- Melhor tratamento de dados vazios
-- Animações CSS para melhor UX
-- Botão para limpar todos os dados
-- Verificação de dependências (Chart.js)
-
-## 📈 Próximas Funcionalidades
-
-- [ ] Importação de dados CSV/JSON
-- [ ] Múltiplas contas/carteiras
-- [ ] Metas financeiras
-- [ ] Alertas de orçamento
-- [ ] Sincronização em nuvem
-- [ ] Relatórios avançados
-- [ ] Dashboard personalizado
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para:
-- Reportar bugs
-- Sugerir novas funcionalidades
-- Melhorar o código
-- Adicionar documentação
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
-
-## 👨‍💻 Autor
-
-Desenvolvido com ❤️ para controle financeiro pessoal.
+Documentação detalhada: [`controle-financeiro/README.md`](controle-financeiro/README.md)
 
 ---
 
-**Versão**: 2.0.0  
-**Última atualização**: Dezembro 2024
+## O que o sistema faz hoje
+
+- **Dashboard** — resumo do mês (a pagar/receber pendente, já pago/recebido, saldo projetado), alertas de vencidas, vencendo hoje e próximos 7 dias
+- **Lançamentos** — CRUD de contas a pagar/receber, com filtros, paginação e status (`PENDENTE`, `CONCLUIDO`, `CANCELADO`)
+- **Ações de status** — concluir (pagar/receber), reabrir e cancelar
+- **Recorrência na criação** — gera várias parcelas (semanal, quinzenal, mensal ou anual) a partir da quantidade informada
+- **Categorias** — CRUD com tipo Pagar, Receber ou Ambos
+- **Relatórios** — resumo do período, por categoria e por mês (gráficos)
+- **Exportação CSV** dos lançamentos
+- **Backup** do banco SQLite (criar, listar e baixar); restauração ainda é manual
+- **Tema** claro/escuro no navegador
+
+Não há login/usuários: pensado para uso local (ou rede privada). Em VPS pública, proteja com proxy/auth externo.
+
+---
+
+## Como rodar (Windows)
+
+Pré-requisito: **Node.js 22+**.
+
+```bat
+cd controle-financeiro\scripts
+controle.bat
+```
+
+Isso sobe backend e frontend. Com o script em execução, `Ctrl+C` pergunta se deseja **parar**, **reiniciar** ou **continuar**.
+
+Atalhos:
+
+```bat
+controle.bat parar
+controle.bat reiniciar
+```
+
+URLs locais (configuração atual):
+
+| Serviço  | URL |
+|----------|-----|
+| Frontend | http://localhost:5173 |
+| Backend  | http://localhost:3001 |
+| Health   | http://localhost:3001/api/health |
+
+Na primeira vez, copie os `.env.example` se ainda não existirem (o `controle.bat` também faz isso):
+
+- `controle-financeiro/backend/.env` → `PORT=3001`
+- `controle-financeiro/frontend/.env` → `VITE_API_URL=http://localhost:3001/api`
+
+Dados de demonstração (opcional):
+
+```bash
+cd controle-financeiro/backend
+npm run seed
+```
+
+---
+
+## Stack
+
+| Camada   | Tecnologia |
+|----------|------------|
+| Frontend | React, Vite, React Router, Recharts |
+| Backend  | Node.js, Express, Zod, Helmet, CORS, rate limit |
+| Banco    | SQLite (`backend/data/financeiro.sqlite`) |
+| Deploy   | Docker Compose (porta 3000 no container; ver README interno) |
+
+---
+
+## Estrutura do repositório
+
+```text
+Planilha Financeira/
+├── controle-financeiro/     ← sistema atual
+│   ├── backend/
+│   ├── frontend/
+│   ├── scripts/controle.bat
+│   └── README.md
+├── index.html / script.js   ← legado (não usar)
+└── README.md                ← este arquivo
+```
