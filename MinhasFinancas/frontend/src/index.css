@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Dark Mode Premium Palette */
+  --bg-color: #0a0a0a;          /* Fundo base extremamente escuro (Carbon) */
+  --surface-color: #141414;     /* Fundo de elementos flutuantes/cards */
+  --surface-hover: #1f1f1f;     /* Efeito de hover em elementos interativos */
+  
+  --primary-color: #10b981;     /* Verde Esmeralda (Vibrante) */
+  --primary-hover: #059669;     /* Verde Esmeralda escurecido */
+  --accent-color: #8b5cf6;      /* Roxo complementar */
+
+  --text-main: #f9fafb;         /* Branco principal */
+  --text-muted: #9ca3af;        /* Cinza para textos secundários */
+
+  --border-color: rgba(255, 255, 255, 0.08); /* Borda envidraçada */
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 10px rgba(16, 185, 129, 0.15); /* Efeito neon sutil */
+  
+  --transition-normal: 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-normal);
+}
+
+ul {
+  list-style: none;
+}
+
+/* Transições utilitárias globais */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+}

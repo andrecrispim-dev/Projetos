@@ -1,0 +1,688 @@
+    <html lang="pt-BR" data-theme="light"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo - Antônio Carlos Crispim Filho</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary-dark: #1a2c4e;
+        --primary-med: #2d4a7a;
+        --accent: #e8a838;
+        --bg-gray: #f5f6f8;
+        --text-dark: #333333;
+        --text-light: #ffffff;
+        --text-muted: #e0e0e0;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #e9ecef;
+        color: var(--text-dark);
+        line-height: 1.5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* Controls Section (Screen Only) */
+      .controls {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        text-align: center;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .btn {
+        background-color: var(--primary-dark);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 0 10px;
+        transition: background 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn:hover {
+        background-color: var(--primary-med);
+      }
+
+      /* Page Container */
+      .page-container {
+        width: 210mm; /* A4 width */
+        min-height: 297mm; /* A4 height */
+        background: white;
+        margin-bottom: 40px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        display: flex;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Layout Columns */
+      .sidebar {
+        width: 32%;
+        background-color: var(--primary-dark);
+        color: var(--text-light);
+        padding: 40px 25px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .main-content {
+        width: 68%;
+        background-color: white;
+        padding: 40px 35px;
+      }
+
+      /* Sidebar Elements */
+      .profile-img-container {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 3px solid var(--accent);
+        margin: 0 auto 30px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .profile-placeholder svg {
+        width: 80px;
+        height: 80px;
+        fill: var(--text-muted);
+      }
+
+      .sidebar-section {
+        margin-bottom: 30px;
+      }
+
+      .sidebar-title {
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 5px;
+        color: var(--text-light);
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .contact-item svg {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        margin-right: 12px;
+        fill: var(--accent);
+      }
+
+      .info-label {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 2px;
+      }
+
+      .info-value {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 12px;
+        color: var(--text-light);
+      }
+
+      .skill-item {
+        margin-bottom: 12px;
+      }
+
+      .skill-name {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 4px;
+        color: var(--text-muted);
+      }
+
+      .skill-bar-bg {
+        width: 100%;
+        height: 6px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+      }
+
+      .skill-bar-fill {
+        height: 100%;
+        background-color: var(--accent);
+        border-radius: 3px;
+      }
+
+      /* Main Content Elements */
+      .header-name {
+        font-family: 'Roboto', sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 5px;
+        line-height: 1.1;
+      }
+
+      .header-title {
+        font-size: 18px;
+        color: var(--primary-med);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+      }
+
+      .section-title {
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        color: var(--primary-dark);
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+
+      .section-title::after {
+        content: '';
+        flex-grow: 1;
+        height: 2px;
+        background-color: var(--bg-gray);
+        margin-left: 15px;
+      }
+
+      .section-title span {
+        border-bottom: 3px solid var(--accent);
+        padding-bottom: 2px;
+      }
+
+      .summary-text {
+        color: #555;
+        font-size: 15px;
+        text-align: justify;
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+
+      .job-item {
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+      }
+
+      .job-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 5px;
+      }
+
+      .job-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--primary-dark);
+      }
+
+      .job-company {
+        color: var(--primary-med);
+        font-weight: 600;
+      }
+
+      .job-date {
+        font-size: 14px;
+        color: #777;
+        font-weight: 500;
+        background-color: var(--bg-gray);
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      .job-details {
+        list-style-type: none;
+        padding-left: 0;
+        margin-top: 8px;
+      }
+
+      .job-details li {
+        position: relative;
+        padding-left: 15px;
+        margin-bottom: 4px;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .job-details li::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+        font-weight: bold;
+      }
+
+      .edu-item,
+      .course-item {
+        margin-bottom: 12px;
+        page-break-inside: avoid;
+      }
+
+      .edu-title {
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--primary-dark);
+      }
+
+      .edu-school {
+        font-size: 14px;
+        color: #555;
+      }
+
+      .tag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .course-tag {
+        background-color: var(--bg-gray);
+        border-left: 3px solid var(--primary-med);
+        padding: 5px 10px;
+        font-size: 13px;
+        border-radius: 0 4px 4px 0;
+        color: #333;
+      }
+
+      /* Label for separation */
+      .version-label {
+        font-size: 24px;
+        font-weight: bold;
+        color: #aaa;
+        margin: 40px 0 20px 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      /* Formal version specific overrides */
+      .sidebar.formal {
+        padding-top: 60px; /* More spacing since no photo */
+      }
+
+      .formal-initials {
+        font-size: 48px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.2);
+        text-align: center;
+        margin-bottom: 40px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 50px auto;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: none;
+          padding: 0;
+          display: block;
+        }
+        .controls,
+        .version-label {
+          display: none;
+        }
+        .page-container {
+          margin: 0;
+          box-shadow: none;
+          page-break-after: always;
+          width: 100%;
+          height: 100%;
+        }
+        /* Logic to hide/show based on classes toggled by JS would go here, 
+               but CSS-only print solution for user selection requires separate divs 
+               and user manually printing pages. We will rely on page-break. */
+      }
+    </style>
+    <script>
+      function printVersion(versionId) {
+        // Hide all pages
+        const pages = document.querySelectorAll('.page-container');
+        pages.forEach((p) => (p.style.display = 'none'));
+
+        // Show selected page
+        document.getElementById(versionId).style.display = 'flex';
+
+        // Print
+        window.print();
+
+        // Restore display for screen
+        pages.forEach((p) => (p.style.display = 'flex'));
+      }
+    </script>
+  </head>
+  <body cz-shortcut-listen="true">
+    <div class="controls">
+      <h2>Currículo Profissional - Antônio Carlos Crispim Filho</h2>
+      <p style="margin: 10px 0 20px; color: #666">Selecione a versão desejada para imprimir:</p>
+      <button class="btn" onclick="printVersion('version-photo')">Imprimir Versão Com Foto</button>
+      <button class="btn" onclick="printVersion('version-formal')">Imprimir Versão Formal</button>
+    </div>
+
+    <div class="version-label">Versão 1: Com Foto</div>
+
+    <!-- VERSION 1: WITH PHOTO -->
+    <div id="version-photo" class="page-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="profile-img-container">
+          <div class="profile-placeholder">
+            <!-- SVG User Icon -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Contato</h3>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+            </svg>
+            antoniocarlosfilho@gmail.com
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+            </svg>
+            (83) 9 9631-0713
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+            </svg>
+            Campina Grande – PB
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Dados Pessoais</h3>
+          <span class="info-label">Nascimento</span>
+          <span class="info-value">29/05/1986</span>
+
+          <span class="info-label">Estado Civil</span>
+          <span class="info-value">Casado</span>
+
+          <span class="info-label">CNH</span>
+          <span class="info-value">Categoria AD</span>
+
+          <span class="info-label">Especialização</span>
+          <span class="info-value">Transp. Veículos de Emergência</span>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Competências</h3>
+          <div class="skill-item">
+            <span class="skill-name">Direção Defensiva &amp; Segura</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 100%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Viagens Longa Distância</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 100%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Pontualidade</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 95%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Relacionamento Interpessoal</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 90%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Manutenção Básica</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 85%"></div></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <h1 class="header-name">ANTÔNIO CARLOS CRISPIM FILHO</h1>
+        <h2 class="header-title">Motorista Profissional</h2>
+
+        <div class="summary-text">
+          Atuar na área de transporte e logística, contribuindo com minha ampla experiência como motorista profissional,
+          incluindo viagens de longa distância, prezando sempre pela segurança, pontualidade e excelência na qualidade
+          do serviço prestado.
+        </div>
+
+        <h3 class="section-title"><span>Experiência Profissional</span></h3>
+
+        <div class="job-item">
+          <div class="job-header">
+            <div class="job-title">Motorista de Aplicativos</div>
+            <div class="job-date">2018 – 2026</div>
+          </div>
+          <ul class="job-details">
+            <li>Atendimento direto ao cliente com foco em segurança e qualidade.</li>
+            <li>Condução defensiva, responsável e planejamento de itinerários.</li>
+            <li>Organização de rotas urbanas e intermunicipais para otimização de tempo.</li>
+          </ul>
+        </div>
+
+        <div class="job-item">
+          <div class="job-header">
+            <div>
+              <div class="job-title">Motorista Autônomo</div>
+              <div class="job-company">Caminhão Truck</div>
+            </div>
+            <div class="job-date">2011 – 2018</div>
+          </div>
+          <ul class="job-details">
+            <li>Experiência sólida em viagens de longa distância em território nacional.</li>
+            <li>Transporte de cargas em rotas intermunicipais e interestaduais.</li>
+            <li>Cumprimento rigoroso de prazos e rotas logísticas.</li>
+            <li>Responsável pela manutenção básica e conservação preventiva do veículo.</li>
+          </ul>
+        </div>
+
+        <div class="job-item">
+          <div class="job-header">
+            <div>
+              <div class="job-title">Motorista</div>
+              <div class="job-company">Rocha Compensados</div>
+            </div>
+            <div class="job-date">2006 – 2007</div>
+          </div>
+          <ul class="job-details">
+            <li>Transporte seguro de mercadorias.</li>
+            <li>Apoio direto nas operações logísticas da empresa.</li>
+            <li>Organização, carga, descarga e conferência de entregas.</li>
+          </ul>
+        </div>
+
+        <h3 class="section-title"><span>Formação Acadêmica</span></h3>
+        <div class="edu-item">
+          <div class="edu-title">Ensino Superior Incompleto</div>
+          <div class="edu-school">Universidade Federal de Campina Grande (UFCG)</div>
+        </div>
+
+        <h3 class="section-title"><span>Cursos &amp; Qualificações</span></h3>
+        <div class="tag-container">
+          <div class="course-tag">APH Avançado – CEAS</div>
+          <div class="course-tag">Suporte Básico de Vida (SBV/BLS) – CEAS</div>
+          <div class="course-tag">Operador de Informática</div>
+          <div class="course-tag">Montagem e Manutenção de Computadores</div>
+          <div class="course-tag">Secretariado e Auxiliar de Escritório</div>
+        </div>
+      </main>
+    </div>
+
+    <div class="version-label">Versão 2: Sem Foto (Formal)</div>
+
+    <!-- VERSION 2: FORMAL (NO PHOTO) -->
+    <div id="version-formal" class="page-container">
+      <!-- Sidebar -->
+      <aside class="sidebar formal">
+        <div class="formal-initials">AC</div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Contato</h3>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+            </svg>
+            antoniocarlosfilho@gmail.com
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+            </svg>
+            (83) 9 9631-0713
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+            </svg>
+            Campina Grande – PB
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Informações</h3>
+          <span class="info-label">Nascimento</span>
+          <span class="info-value">29/05/1986</span>
+
+          <span class="info-label">CNH</span>
+          <span class="info-value">Categoria AD</span>
+
+          <span class="info-label">Qualificação</span>
+          <span class="info-value">Transp. Veículos Emergência</span>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Habilidades</h3>
+          <div class="skill-item">
+            <span class="skill-name">Segurança Viária</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 100%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Logística Rodoviária</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 100%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Pontualidade</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 100%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Adaptabilidade</span>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 90%"></div></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <h1 class="header-name">ANTÔNIO CARLOS CRISPIM FILHO</h1>
+        <h2 class="header-title">Motorista Profissional</h2>
+
+        <div class="summary-text">
+          Profissional com sólida trajetória na área de transporte e logística. Busco aplicar minha experiência em
+          viagens de longa distância e condução de veículos pesados, mantendo sempre o foco em segurança,
+          responsabilidade e eficiência operacional.
+        </div>
+
+        <h3 class="section-title"><span>Histórico Profissional</span></h3>
+
+        <div class="job-item">
+          <div class="job-header">
+            <div class="job-title">Motorista de Aplicativos</div>
+            <div class="job-date">2018 – Atual</div>
+          </div>
+          <ul class="job-details">
+            <li>Atuação com foco em excelência no atendimento ao cliente e segurança.</li>
+            <li>Aplicação constante de direção defensiva em perímetros urbanos e rodoviários.</li>
+            <li>Gestão autônoma de rotas e horários para maximização de resultados.</li>
+          </ul>
+        </div>
+
+        <div class="job-item">
+          <div class="job-header">
+            <div>
+              <div class="job-title">Motorista Autônomo (Caminhão Truck)</div>
+            </div>
+            <div class="job-date">2011 – 2018</div>
+          </div>
+          <ul class="job-details">
+            <li>Realização de viagens de longa distância (interestaduais).</li>
+            <li>Transporte de cargas diversas com rigoroso cumprimento de prazos.</li>
+            <li>Gestão logística de rotas e manutenção preventiva do veículo.</li>
+          </ul>
+        </div>
+
+        <div class="job-item">
+          <div class="job-header">
+            <div>
+              <div class="job-title">Motorista</div>
+              <div class="job-company">Rocha Compensados</div>
+            </div>
+            <div class="job-date">2006 – 2007</div>
+          </div>
+          <ul class="job-details">
+            <li>Responsável pelo transporte e entrega de mercadorias.</li>
+            <li>Suporte operacional nas atividades de logística e expedição.</li>
+          </ul>
+        </div>
+
+        <h3 class="section-title"><span>Educação</span></h3>
+        <div class="edu-item">
+          <div class="edu-title">Ensino Superior Incompleto</div>
+          <div class="edu-school">Universidade Federal de Campina Grande</div>
+        </div>
+
+        <h3 class="section-title"><span>Cursos Complementares</span></h3>
+        <div class="tag-container">
+          <div class="course-tag">APH Avançado (CEAS)</div>
+          <div class="course-tag">Suporte Básico de Vida (BLS)</div>
+          <div class="course-tag">Montagem e Manutenção de Computadores</div>
+          <div class="course-tag">Informática Avançada</div>
+        </div>
+      </main>
+    </div>
+  <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+
+</body></html>

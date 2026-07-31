@@ -1,0 +1,190 @@
+/* Utilidade Header */
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all var(--transition-normal);
+}
+.primary-button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.ghost-button {
+    color: var(--text-muted);
+    padding: 0.6rem 1.2rem;
+    transition: color 0.2s;
+}
+.ghost-button:hover { color: var(--text-main); }
+
+/* Grid de Contas */
+.contas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.conta-card {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--border-accent, var(--primary-color));
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-normal);
+}
+.conta-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.conta-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.conta-info h4 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+.categoria {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.conta-saldo {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+.saldo-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+.saldo-valor {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* loading */
+.loading-state, .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Modal Premium (Glassmorphism) */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    width: 100%;
+    max-width: 550px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.modal-header h4 { font-size: 1.2rem; }
+
+.close-btn { color: var(--text-muted); }
+.close-btn:hover { color: var(--text-main); }
+
+.modal-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+.form-row .form-group { flex: 1; }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.form-group label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+.form-group input, .form-group select {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color var(--transition-normal);
+}
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.form-group input[type="color"] {
+    padding: 0.2rem;
+    height: 44px;
+    cursor: pointer;
+}
+.color-group { max-width: 60px; }
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
