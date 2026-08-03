@@ -77,3 +77,8 @@ log.txt
 *.sqlite
 *.db
 *.accdb
+
+/Planilha Financeira/controle-financeiro/
+/Analise Cartao/
+/Planilha Financeira/controle-financeiro-BACKUP/
+/Analise Cartao-BACKUP/
