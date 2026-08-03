@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise Fatura Bradesco • Ago/2026</title>
+<style>
+  :root{
+    --bg:#0f1720; --card:#161f2b; --line:#24313f; --txt:#e8eef4; --muted:#9fb0c0;
+    --accent:#e6007e; --accent2:#00a7e1; --ok:#2ec77a; --warn:#f0a020; --parc:#7c5cff;
+    --row:#131c26; --rowalt:#17222e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);padding:16px;line-height:1.4}
+  h1{font-size:1.5rem;font-weight:700;margin-bottom:2px}
+  h1 span{color:var(--accent)}
+  .sub{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+
+  .dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .kpi .lbl{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.5px}
+  .kpi .val{font-size:1.35rem;font-weight:700;margin-top:4px}
+  .kpi .val.pink{color:var(--accent)} .kpi .val.blue{color:var(--accent2)}
+  .kpi .val.green{color:var(--ok)} .kpi .val.purple{color:var(--parc)}
+  .kpi .foot{color:var(--muted);font-size:.72rem;margin-top:3px}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+  .controls input[type=text]{background:var(--card);border:1px solid var(--line);color:var(--txt);padding:9px 12px;border-radius:8px;font-size:.85rem;min-width:200px}
+  .btn{background:var(--card);border:1px solid var(--line);color:var(--txt);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.82rem}
+  .btn:hover{border-color:var(--accent)}
+  .btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .filterpills{display:flex;gap:6px;flex-wrap:wrap}
+  .progress{margin-left:auto;font-size:.82rem;color:var(--muted)}
+  .progress b{color:var(--ok)}
+
+  .group{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:18px;overflow:hidden}
+  .ghead{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:linear-gradient(90deg,#1c2735,#161f2b);border-bottom:1px solid var(--line);flex-wrap:wrap;gap:8px}
+  .ghead .name{font-weight:700;font-size:1rem}
+  .ghead .card{color:var(--muted);font-size:.78rem;font-family:monospace}
+  .ghead .tot{font-weight:700;color:var(--accent);font-size:1.05rem;text-align:right}
+  .ghead .totsub{font-weight:500;color:var(--muted);font-size:.68rem;margin-top:2px}
+  .progress .filt{color:var(--parc)}
+
+  table{width:100%;border-collapse:collapse;font-size:.83rem}
+  th{text-align:left;padding:9px 10px;color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card)}
+  td{padding:8px 10px;border-bottom:1px solid var(--line)}
+  tr.data:nth-child(even){background:var(--rowalt)}
+  tr.data:hover{background:#1e2b39}
+  tr.checked{opacity:.5}
+  tr.checked td.desc{text-decoration:line-through}
+  .val-r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .chk{width:20px;height:20px;cursor:pointer;accent-color:var(--ok)}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:600;white-space:nowrap}
+  .tag.avista{background:rgba(46,199,122,.15);color:var(--ok)}
+  .tag.parc{background:rgba(124,92,255,.18);color:#b5a4ff}
+  .tag.rec{background:rgba(240,160,32,.15);color:var(--warn)}
+  .city{color:var(--muted);font-size:.75rem}
+  .foreign{color:var(--accent2);font-size:.7rem}
+  .catcell{font-size:.78rem;color:#cdd8e2;white-space:nowrap}
+  .catcell.unknown{color:var(--warn);font-weight:600}
+  .catcell.useredit{color:var(--accent2);font-weight:600}
+  .catcell{cursor:pointer}
+  .catcell:hover{text-decoration:underline}
+  .note{color:var(--muted);font-size:.78rem;padding:14px 16px;border-top:1px solid var(--line);background:var(--row)}
+  .hint{background:rgba(0,167,225,.08);border:1px solid rgba(0,167,225,.3);border-radius:10px;padding:12px 14px;font-size:.82rem;margin-bottom:18px;color:#bfe3f5}
+  .hidden{display:none!important}
+  @media(max-width:640px){
+    .city,.foreign{display:none}
+    h1{font-size:1.2rem}
+    td,th{padding:7px 6px}
+  }
+  footer{color:var(--muted);font-size:.72rem;text-align:center;margin-top:24px;padding-top:14px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+  <h1>Fatura <span>Bradesco Visa Infinite</span></h1>
+  <div class="sub">Venc. 08/08/2026 · Fechamento próxima 26/08/2026 · Titulares: Isabela &amp; André</div>
+
+  <div class="dash">
+    <div class="kpi"><div class="lbl">Total da Fatura</div><div class="val pink">R$ 16.570,41</div><div class="foot">Pagamento TOTAL (sem juros)</div></div>
+    <div class="kpi"><div class="lbl">À vista este mês</div><div class="val green" id="kpi-avista">–</div><div class="foot" id="kpi-avista-n"></div></div>
+    <div class="kpi"><div class="lbl">Parcelas este mês</div><div class="val purple" id="kpi-parc">–</div><div class="foot" id="kpi-parc-n"></div></div>
+    <div class="kpi"><div class="lbl">Compromisso futuro</div><div class="val blue">R$ 27.526,21</div><div class="foot">parcelas em próximas faturas</div></div>
+    <div class="kpi"><div class="lbl">Limite disponível</div><div class="val">R$ 22.303,38</div><div class="foot">de R$ 66.000,00</div></div>
+    <div class="kpi"><div class="lbl">Pontos Livelo</div><div class="val">53.402</div><div class="foot">+5.887 no mês</div></div>
+  </div>
+
+  <div class="hint">💡 <b>Como usar:</b> marque o checkbox de cada lançamento que estiver de acordo com o seu controle. Linhas marcadas ficam esmaecidas e riscadas. Use os filtros para ver só parceladas, só à vista, ou buscar por nome. O progresso é salvo no seu navegador.</div>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="🔍 Buscar estabelecimento...">
+    <div class="filterpills">
+      <button class="btn active" data-f="all">Todos</button>
+      <button class="btn" data-f="avista">À vista</button>
+      <button class="btn" data-f="parc">Parcelados</button>
+      <button class="btn" data-f="unchecked">Não conferidos</button>
+      <button class="btn" data-f="semcat">❓ Sem categoria</button>
+    </div>
+    <div class="progress"><span id="filtsum"></span>Conferidos: <b id="pcount">0</b> / <span id="ptotal">0</span></div>
+  </div>
+
+  <div id="groups"></div>
+
+  <footer>Análise gerada a partir da fatura PDF · valores conferidos e batem com o total oficial de R$ 16.570,41 · esta página é só sua ferramenta de conferência, nada é enviado a lugar nenhum.</footer>
+
+<script>
+const CAT = {
+ "mytrip (passagem)":"Viagem","Smiles Club":"Viagem","Drogaria Drogavista":"Farmácia",
+ "Sephora Higienópolis":"Beleza","Decathlon":"Esporte","Americanas SA":"Varejo",
+ "Lojas Americanas 72707":"Varejo","Usaflex Rio Mar":"Calçados/Vestuário",
+ "Shoulder - Rio Mar":"Vestuário","Arezzo":"Calçados/Vestuário","Mercado Livre":"Compras Online",
+ "A Pérola Joias":"Joias/Acessórios","Queropassagem Via":"Viagem","Maxmilhas":"Viagem",
+ "JIM.com Pousada Refúgio":"Viagem","Shopee *AMGDecore":"Compras Online","Amazon BR":"Compras Online",
+ "Damyller D098":"Vestuário","Forneria Delicatessen":"Alimentação","Dantas Prado Spa":"Beleza/Estética",
+ "Netflix":"Streaming","Luminare Óculos":"Óptica","IPM Educação":"Educação",
+ "Clube Livelo":"Programa/Assinatura","VP Beauty":"Beleza/Estética","Apple.com/Bill":"Streaming/Apps",
+ "Pandoro":"Alimentação","Drogasil 1848":"Farmácia","Drogasil 5121":"Farmácia",
+ "G Barbosa 90":"Supermercado","Mapfre (seguro)":"Seguros","Uber Rides":"Transporte",
+ "Assistência (Assisteccia)":"Seguros/Assistência","Alfaiataria Sonia Nas":"Vestuário/Costura",
+ "Amazon Mktplace *Vauticome":"Compras Online","Riomar Aracaju Parking":"Estacionamento",
+ "MM Gonçalves":"Lavanderia","Comércio Varejista D":"Varejo","Elli Bijoux":"Joias/Acessórios",
+ "Cars on Booking":"Viagem/Locação","Estação do Lancche":"Alimentação","Posto Ibiza":"Combustível",
+ "Anuidade Diferenciada":"Tarifa do Cartão","IOF — Custo Trans. Exterior":"Imposto/Tarifa",
+ "Azul Linhas Aéreas":"Viagem","TAP Web Vip":"Viagem","Sua Academia":"Academia",
+ "Login Informática":"Informática","Azul (AZULLHF5SI)":"Viagem",
+ "iFood *Horizonte Restaura":"Alimentação (delivery)","Rede RPB":"Combustível",
+ "Preço 0035 SP 076":"Supermercado","Taful Café e Chocolate":"Alimentação",
+ "iFood *AJU Food Park":"Alimentação (delivery)","Supermercado Bombom":"Supermercado",
+ "iFood *VS Serviços":"Alimentação (delivery)","ACJ Comércio Combustível":"Combustível",
+ "Raia Drogasil":"Farmácia","G Barbosa 06":"Supermercado","K M Restaurant":"Alimentação",
+ "Kalunga Shop Jardins":"Papelaria/Informática","Selfit Jardins (academia)":"Academia",
+ "Nukoni Sushi Bar":"Alimentação","Aracaju Adm Shop Cente":"Estacionamento",
+ "Boteco Maria Fumaça 2":"Alimentação","iFood *Aroma Companhia":"Alimentação (delivery)",
+ "iFood *Bar do Cuscuz":"Alimentação (delivery)","Benfica Hortifruti":"Hortifruti/Supermercado",
+ "Seguro Superprotegido":"Seguros","AceGelatos":"Alimentação",
+ "Maria Fernanda Lima":"Eletrônicos","Araujo e Almeida":"Suplementos",
+ "JIM.com Move Mente Ação":"Não definida","Casa Alema":"Alimentação","Ritual V":"Vestuário",
+ "F S M Garcez":"Estacionamento","Brumar Armazém Natur":"Suplementos",
+ "Anna Katharina Dos":"Saúde","Diplomata Pina":"Alimentação","Seu Manoel":"Alimentação",
+ "W A Barreto e Cia":"Combustível","Maralco Comércio":"Alimentação"
+};
+function catOf(desc){ return CAT[desc] || "❓ Confirmar"; }
+
+const DATA = [
+  { titular:"Isabela — Cartão final 8177", card:"4066 •••• •••• 8177", total:10277.26, itens:[
+    {d:"30/09",desc:"mytrip (passagem)",city:"GUARULHOS",v:299.52,p:"10/12"},
+    {d:"30/09",desc:"mytrip (passagem)",city:"GUARULHOS",v:299.52,p:"10/12"},
+    {d:"12/11",desc:"Smiles Club",city:"Barueri",v:43.70,p:"09/12"},
+    {d:"28/11",desc:"Drogaria Drogavista",city:"SURUBIM",v:99.34,p:"08/10"},
+    {d:"09/12",desc:"Sephora Higienópolis",city:"SAO PAULO",v:59.30,p:"08/10"},
+    {d:"11/12",desc:"Decathlon",city:"SAO PAULO",v:111.98,p:"08/10"},
+    {d:"06/01",desc:"Americanas SA",city:"ITAPEVI",v:81.25,p:"07/08"},
+    {d:"07/01",desc:"Americanas SA",city:"ITAPEVI",v:250.00,p:"07/08"},
+    {d:"07/01",desc:"Lojas Americanas 72707",city:"SURUBIM",v:150.00,p:"07/10"},
+    {d:"09/01",desc:"Lojas Americanas 72707",city:"SURUBIM",v:300.00,p:"07/10"},
+    {d:"08/05",desc:"Preço 0035 SP 076",city:"SAO PAULO",v:88.23,p:"03/03"},
+    {d:"08/05",desc:"Usaflex Rio Mar",city:"ARACAJU",v:133.33,p:"03/03"},
+    {d:"08/05",desc:"Shoulder - Rio Mar",city:"ARACAJU",v:195.21,p:"03/06"},
+    {d:"10/05",desc:"Arezzo",city:"ARACAJU",v:79.96,p:"03/03"},
+    {d:"11/05",desc:"Maria Fernanda Lima",city:"ARACAJU",v:958.50,p:"03/12"},
+    {d:"20/05",desc:"Mercado Livre",city:"OSASCO",v:88.33,p:"03/06"},
+    {d:"25/05",desc:"A Pérola Joias",city:"ARACAJU",v:229.16,p:"03/12"},
+    {d:"27/05",desc:"Queropassagem Via",city:"BARUERI",v:173.01,p:"02/03"},
+    {d:"07/06",desc:"Maxmilhas",city:"BELO HORIZONTE",v:246.12,p:"02/06"},
+    {d:"07/06",desc:"JIM.com Pousada Refúgio",city:"RECIFE",v:239.86,p:"02/06"},
+    {d:"08/06",desc:"Shopee *AMGDecore",city:"Sao Bernardo",v:95.98,p:"02/05"},
+    {d:"08/06",desc:"Mercado Livre",city:"OSASCO",v:159.09,p:"02/10"},
+    {d:"10/06",desc:"Amazon BR",city:"Sao Paulo",v:46.72,p:"02/04"},
+    {d:"17/06",desc:"Araujo e Almeida",city:"ARACAJU",v:107.34,p:"02/03"},
+    {d:"18/06",desc:"Damyller D098",city:"ARACAJU",v:99.80,p:"02/05"},
+    {d:"26/06",desc:"Forneria Delicatessen",city:"ARACAJU",v:50.67,p:null},
+    {d:"29/06",desc:"Dantas Prado Spa",city:"ARACAJU",v:40.00,p:null},
+    {d:"30/06",desc:"Netflix",city:"BARUERI",v:44.90,p:null,rec:true},
+    {d:"01/07",desc:"Luminare Óculos",city:"SIMAO DIAS",v:400.00,p:"01/02"},
+    {d:"02/07",desc:"IPM Educação",city:"GOIANIA",v:2057.54,p:null},
+    {d:"04/07",desc:"Clube Livelo",city:"SANTANA DE PARNAÍBA",v:44.90,p:null,rec:true},
+    {d:"09/07",desc:"VP Beauty",city:"ARACAJU",v:52.00,p:"01/02"},
+    {d:"09/07",desc:"JIM.com Move Mente Ação",city:"ARACAJU",v:70.20,p:null},
+    {d:"09/07",desc:"Dantas Prado Spa",city:"ARACAJU",v:40.00,p:null},
+    {d:"10/07",desc:"Apple.com/Bill",city:"SAO PAULO",v:9.99,p:null,rec:true},
+    {d:"11/07",desc:"Pandoro",city:"ARACAJU",v:17.47,p:null},
+    {d:"11/07",desc:"Drogasil 1848",city:"ARACAJU",v:72.13,p:null},
+    {d:"11/07",desc:"Drogasil 5121",city:"ARACAJU",v:22.45,p:null},
+    {d:"13/07",desc:"Amazon BR",city:"Sao Paulo",v:26.54,p:null},
+    {d:"14/07",desc:"Pandoro",city:"ARACAJU",v:34.43,p:null},
+    {d:"15/07",desc:"Casa Alema",city:"ARACAJU",v:78.00,p:null},
+    {d:"15/07",desc:"G Barbosa 90",city:"ARACAJU",v:16.11,p:null},
+    {d:"16/07",desc:"Mapfre (seguro)",city:"SAO PAULO",v:366.15,p:null,rec:true},
+    {d:"16/07",desc:"Uber Rides",city:"Sao Paulo",v:14.97,p:null},
+    {d:"17/07",desc:"Pandoro",city:"ARACAJU",v:39.83,p:null},
+    {d:"18/07",desc:"Amazon BR",city:"Sao Paulo",v:184.00,p:null},
+    {d:"20/07",desc:"Apple.com/Bill",city:"SAO PAULO",v:66.90,p:null,rec:true},
+    {d:"20/07",desc:"Dantas Prado Spa",city:"ARACAJU",v:80.00,p:null},
+    {d:"20/07",desc:"Assistência (Assisteccia)",city:"ARACAJU",v:60.00,p:null},
+    {d:"20/07",desc:"Alfaiataria Sonia Nas",city:"ARACAJU",v:55.00,p:null},
+    {d:"21/07",desc:"Amazon Mktplace *Vauticome",city:"CAMPINAS",v:35.90,p:null},
+    {d:"22/07",desc:"G Barbosa 90",city:"ARACAJU",v:32.98,p:null},
+    {d:"22/07",desc:"Riomar Aracaju Parking",city:"ARACAJU",v:11.00,p:null},
+    {d:"22/07",desc:"MM Gonçalves",city:"ARACAJU",v:399.53,p:null},
+    {d:"22/07",desc:"Ritual V",city:"ARACAJU",v:75.00,p:null},
+    {d:"22/07",desc:"Comércio Varejista D",city:"ARACAJU",v:53.77,p:"01/04"},
+    {d:"22/07",desc:"Usaflex Rio Mar",city:"ARACAJU",v:52.03,p:"01/05"},
+    {d:"22/07",desc:"Elli Bijoux",city:"ARACAJU",v:107.68,p:"01/03"},
+    {d:"22/07",desc:"Cars on Booking",city:"London",v:625.69,p:null,fx:"USD 117,39 · câmbio 5,33"},
+    {d:"23/07",desc:"Estação do Lancche",city:"ARACAJU",v:17.00,p:null},
+    {d:"24/07",desc:"Uber Rides",city:"Sao Paulo",v:12.99,p:null},
+    {d:"26/07",desc:"Posto Ibiza",city:"RECIFE",v:50.80,p:null},
+    {d:"27/07",desc:"Uber Rides",city:"Sao Paulo",v:21.37,p:null},
+    {d:"27/07",desc:"IPM Educação",city:"GOIANIA",v:125.00,p:"01/06"},
+    {d:"28/07",desc:"Pandoro",city:"ARACAJU",v:5.19,p:null},
+    {d:"28/07",desc:"Anuidade Diferenciada",city:"",v:50.00,p:"04/12"},
+    {d:"29/07",desc:"IOF — Custo Trans. Exterior",city:"",v:21.90,p:null,fx:"IOF sobre compra internacional"},
+  ]},
+  { titular:"Isabela — Cartão final 7129", card:"4066 •••• •••• 7129", total:284.73, itens:[
+    {d:"04/10",desc:"Azul Linhas Aéreas",city:"Barueri",v:42.00,p:"10/12"},
+    {d:"07/01",desc:"TAP Web Vip",city:"SAO PAULO",v:107.83,p:"07/10"},
+    {d:"20/07",desc:"Sua Academia",city:"SANTOS",v:134.90,p:null,rec:true},
+  ]},
+  { titular:"André Crispim Lima — Cartão final 3913", card:"4066 •••• •••• 3913", total:6008.42, itens:[
+    {d:"05/05",desc:"Mercado Livre",city:"OSASCO",v:61.49,p:"03/10"},
+    {d:"11/06",desc:"Login Informática",city:"ARACAJU",v:356.91,p:"02/10"},
+    {d:"12/06",desc:"Azul (AZULLHF5SI)",city:"BARUERI",v:395.96,p:"02/06"},
+    {d:"27/06",desc:"iFood *Horizonte Restaura",city:"ARACAJU",v:78.86,p:null},
+    {d:"27/06",desc:"Pandoro",city:"ARACAJU",v:32.59,p:null},
+    {d:"29/06",desc:"Pandoro",city:"ARACAJU",v:16.26,p:null},
+    {d:"01/07",desc:"Rede RPB",city:"ARACAJU",v:120.00,p:null},
+    {d:"01/07",desc:"Preço 0035 SP 076",city:"S PAULO",v:103.80,p:null},
+    {d:"02/07",desc:"Taful Café e Chocolate",city:"ARACAJU",v:21.00,p:null},
+    {d:"02/07",desc:"Drogasil 5121",city:"ARACAJU",v:18.93,p:null},
+    {d:"02/07",desc:"Taful Café e Chocolate",city:"ARACAJU",v:115.00,p:null},
+    {d:"03/07",desc:"iFood *AJU Food Park",city:"ARACAJU",v:62.90,p:null},
+    {d:"03/07",desc:"Pandoro",city:"ARACAJU",v:65.84,p:null},
+    {d:"04/07",desc:"Supermercado Bombom",city:"ARACAJU",v:467.30,p:null},
+    {d:"05/07",desc:"iFood *VS Serviços",city:"ARACAJU",v:159.48,p:null},
+    {d:"06/07",desc:"ACJ Comércio Combustível",city:"ARACAJU",v:150.00,p:null},
+    {d:"08/07",desc:"Raia Drogasil",city:"SAO PAULO",v:233.77,p:"01/03"},
+    {d:"09/07",desc:"G Barbosa 06",city:"ARACAJU",v:49.98,p:null},
+    {d:"09/07",desc:"Pandoro",city:"ARACAJU",v:20.30,p:null},
+    {d:"10/07",desc:"Supermercado Bombom",city:"ARACAJU",v:98.81,p:null},
+    {d:"10/07",desc:"F S M Garcez",city:"ARACAJU",v:14.00,p:null},
+    {d:"11/07",desc:"K M Restaurant",city:"CARIRA",v:123.50,p:null},
+    {d:"12/07",desc:"Supermercado Bombom",city:"ARACAJU",v:96.16,p:null},
+    {d:"12/07",desc:"iFood *VS Serviços",city:"ARACAJU",v:186.48,p:null},
+    {d:"13/07",desc:"Rede RPB",city:"ARACAJU",v:200.00,p:null},
+    {d:"13/07",desc:"F S M Garcez",city:"ARACAJU",v:4.00,p:null},
+    {d:"13/07",desc:"Brumar Armazém Natur",city:"ARACAJU",v:173.28,p:"01/03"},
+    {d:"14/07",desc:"Kalunga Shop Jardins",city:"ARACAJU",v:52.14,p:"01/03"},
+    {d:"14/07",desc:"Selfit Jardins (academia)",city:"ARACAJU",v:129.90,p:null,rec:true},
+    {d:"16/07",desc:"F S M Garcez",city:"ARACAJU",v:6.00,p:null},
+    {d:"16/07",desc:"Anna Katharina Dos",city:"JANDAIRA",v:250.00,p:null},
+    {d:"16/07",desc:"Pandoro",city:"ARACAJU",v:86.67,p:null},
+    {d:"16/07",desc:"Nukoni Sushi Bar",city:"ARACAJU",v:183.48,p:null},
+    {d:"18/07",desc:"Aracaju Adm Shop Cente",city:"ARACAJU",v:11.00,p:null},
+    {d:"18/07",desc:"G Barbosa 06",city:"ARACAJU",v:123.91,p:null},
+    {d:"21/07",desc:"ACJ Comércio Combustível",city:"ARACAJU",v:120.00,p:null},
+    {d:"21/07",desc:"Pandoro",city:"ARACAJU",v:83.15,p:null},
+    {d:"22/07",desc:"Dantas Prado Spa",city:"ARACAJU",v:140.00,p:null},
+    {d:"22/07",desc:"AceGelatos",city:"ARACAJU",v:23.00,p:null},
+    {d:"22/07",desc:"Pandoro",city:"ARACAJU",v:76.40,p:null},
+    {d:"23/07",desc:"Boteco Maria Fumaça 2",city:"CAMPINA GRANDE",v:94.20,p:null},
+    {d:"23/07",desc:"iFood *Aroma Companhia",city:"CAMPINA GRANDE",v:52.91,p:null},
+    {d:"23/07",desc:"Diplomata Pina",city:"RECIFE",v:131.91,p:null},
+    {d:"24/07",desc:"iFood *Bar do Cuscuz",city:"CAMPINA GRANDE",v:312.19,p:null},
+    {d:"25/07",desc:"Seu Manoel",city:"CAMPINA GRANDE",v:6.00,p:null},
+    {d:"25/07",desc:"W A Barreto e Cia",city:"CAMPINA GRANDE",v:17.46,p:null},
+    {d:"25/07",desc:"W A Barreto e Cia",city:"CAMPINA GRANDE",v:150.00,p:null},
+    {d:"26/07",desc:"Maralco Comércio",city:"RECIFE",v:89.20,p:null},
+    {d:"28/07",desc:"Benfica Hortifruti",city:"ARACAJU",v:101.28,p:null},
+    {d:"28/07",desc:"Supermercado Bombom",city:"ARACAJU",v:331.03,p:null},
+    {d:"28/07",desc:"Seguro Superprotegido",city:"",v:9.99,p:null,rec:true},
+  ]},
+];
+
+const fmt = n => n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const KEY = 'fatura_bradesco_ago2026_v1';
+const CATKEY = 'fatura_bradesco_ago2026_cats_v1';
+let checks = JSON.parse(localStorage.getItem(KEY) || '{}');
+let catOverrides = JSON.parse(localStorage.getItem(CATKEY) || '{}');
+let filter = 'all', term = '';
+
+function editCat(desc){
+  const cur = catOverrides[desc] || (CAT[desc]||'');
+  const val = prompt('Categoria para "'+desc+'":', cur==="❓ Confirmar"?'':cur);
+  if(val===null) return;
+  if(val.trim()===''){ delete catOverrides[desc]; }
+  else { catOverrides[desc]=val.trim(); }
+  localStorage.setItem(CATKEY, JSON.stringify(catOverrides));
+  render();
+}
+
+function idOf(gi,ii){return gi+'_'+ii;}
+
+function render(){
+  const wrap = document.getElementById('groups');
+  wrap.innerHTML='';
+  let totalItens=0, totalChk=0, avistaSum=0, avistaN=0, parcSum=0, parcN=0;
+  let visibleSumAll=0, visibleNAll=0;
+
+  DATA.forEach((g,gi)=>{
+    const grp=document.createElement('div'); grp.className='group';
+    let rows='';
+    let groupVisibleSum=0, groupVisibleN=0;
+    g.itens.forEach((it,ii)=>{
+      const id=idOf(gi,ii);
+      totalItens++;
+      if(checks[id])totalChk++;
+      const isParc = !!it.p;
+      if(it.desc.indexOf('IOF')<0){
+        if(isParc){parcSum+=it.v;parcN++;} else {avistaSum+=it.v;avistaN++;}
+      }
+      // filtro
+      let show=true;
+      if(filter==='avista' && isParc) show=false;
+      if(filter==='parc' && !isParc) show=false;
+      if(filter==='unchecked' && checks[id]) show=false;
+      if(filter==='semcat' && (catOverrides[it.desc] || catOf(it.desc)!=="❓ Confirmar")) show=false;
+      if(term && (it.desc.toLowerCase().indexOf(term)<0)) show=false;
+
+      if(show){groupVisibleSum+=it.v;groupVisibleN++;visibleSumAll+=it.v;visibleNAll++;}
+
+      let tag;
+      if(it.desc.indexOf('IOF')>=0) tag='<span class="tag rec">encargo</span>';
+      else if(isParc){
+        const [a,b]=it.p.split('/'); const falta=parseInt(b)-parseInt(a);
+        tag=`<span class="tag parc">parc ${it.p} · faltam ${falta}</span>`;
+      } else if(it.rec) tag='<span class="tag rec">recorrente</span>';
+      else tag='<span class="tag avista">à vista</span>';
+
+      const c = catOf(it.desc);
+      const userCat = catOverrides[it.desc];
+      const shownCat = userCat || c;
+      const isUnknown = shownCat==="❓ Confirmar";
+      const catCls = isUnknown ? "catcell unknown" : (userCat ? "catcell useredit" : "catcell");
+      rows+=`<tr class="data ${checks[id]?'checked':''} ${show?'':'hidden'}" data-id="${id}">
+        <td style="text-align:center"><input type="checkbox" class="chk" ${checks[id]?'checked':''} onchange="toggle('${id}')"></td>
+        <td style="white-space:nowrap;color:var(--muted)">${it.d}</td>
+        <td class="desc">${it.desc}${it.fx?`<div class="foreign">${it.fx}</div>`:''}<div class="city">${it.city||''}</div></td>
+        <td class="${catCls}" title="Clique para editar" onclick="editCat('${it.desc.replace(/'/g,"\\'")}')">${shownCat}</td>
+        <td>${tag}</td>
+        <td class="val-r">R$ ${fmt(it.v)}</td>
+      </tr>`;
+    });
+    const isFiltered = (filter!=='all') || (term!=='');
+    const totHtml = isFiltered
+      ? `<div class="tot">R$ ${fmt(groupVisibleSum)}<div class="totsub">${groupVisibleN} de ${g.itens.length} · total R$ ${fmt(g.total)}</div></div>`
+      : `<div class="tot">R$ ${fmt(g.total)}</div>`;
+    grp.innerHTML=`
+      <div class="ghead">
+        <div><div class="name">${g.titular}</div><div class="card">${g.card}</div></div>
+        ${totHtml}
+      </div>
+      <table>
+        <thead><tr><th style="width:44px">✓</th><th>Data</th><th>Estabelecimento</th><th>Categoria</th><th>Tipo</th><th class="val-r">Valor</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    wrap.appendChild(grp);
+  });
+
+  const isFilteredGlobal = (filter!=='all') || (term!=='');
+  document.getElementById('filtsum').innerHTML = isFilteredGlobal
+    ? `Filtrado: <span class="filt">R$ ${fmt(visibleSumAll)}</span> (${visibleNAll} itens) &nbsp;·&nbsp; `
+    : '';
+  document.getElementById('pcount').textContent=totalChk;
+  document.getElementById('ptotal').textContent=totalItens;
+  document.getElementById('kpi-avista').textContent='R$ '+fmt(avistaSum);
+  document.getElementById('kpi-avista-n').textContent=avistaN+' lançamentos do mês';
+  document.getElementById('kpi-parc').textContent='R$ '+fmt(parcSum);
+  document.getElementById('kpi-parc-n').textContent=parcN+' parcelas nesta fatura';
+}
+
+function toggle(id){
+  checks[id]=!checks[id];
+  localStorage.setItem(KEY,JSON.stringify(checks));
+  render();
+}
+
+document.querySelectorAll('.btn[data-f]').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.btn[data-f]').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); filter=b.dataset.f; render();
+  };
+});
+document.getElementById('search').oninput=e=>{term=e.target.value.toLowerCase();render();};
+
+render();
+</script>
+</body>
+</html>
