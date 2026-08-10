@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0c">
+<title>AURYN — Gestão Financeira</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#08090a;--panel:#101112;--panel2:#151617;--line:#282a2d;--text:#f3f0e9;--muted:#9b9a96;--gold:#d4af57;--gold2:#f1d487;--green:#5fc49b;--red:#e47c7c;--shadow:0 18px 60px rgba(0,0,0,.32)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% -10%,#282016 0,#0b0b0c 35%,#08090a 70%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}.app{min-height:100vh;display:flex}.sidebar{width:255px;background:rgba(8,9,10,.92);border-right:1px solid var(--line);padding:26px 16px;position:fixed;inset:0 auto 0 0;z-index:10}.brand{display:flex;align-items:center;gap:12px;padding:4px 12px 30px}.mark{width:38px;height:38px;border:1px solid #6d5627;border-radius:11px;display:grid;place-items:center;background:#0c0c0d}.mark span{color:var(--gold);font-size:21px;font-weight:800;letter-spacing:-3px}.brand b{letter-spacing:7px;font-family:Georgia,serif;font-size:17px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#aaa;padding:12px 14px;border-radius:10px;text-align:left;cursor:pointer}.nav button:hover,.nav button.active{background:#171718;color:var(--gold2)}.nav small{display:block;color:#62615e;font-size:10px;letter-spacing:1.5px;margin:22px 14px 7px;text-transform:uppercase}.main{margin-left:255px;width:calc(100% - 255px);padding:34px 42px 60px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}.eyebrow{color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase}.title{font-family:Georgia,serif;font-size:34px;margin:7px 0 0}.profile{border:1px solid var(--line);background:#111213;border-radius:12px;padding:9px 13px;color:#d8d4cc}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.card{background:linear-gradient(145deg,#131516,#0e0f10);border:1px solid var(--line);border-radius:16px;padding:21px;box-shadow:var(--shadow)}.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}.label{font-size:11px;color:var(--muted);letter-spacing:1.3px;text-transform:uppercase}.big{font-size:29px;margin-top:9px;font-weight:650}.positive{color:var(--green)}.negative{color:var(--red)}.gold{color:var(--gold2)}.muted{color:var(--muted)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.btn{border:1px solid #5e4b27;background:linear-gradient(180deg,#d8b55f,#b88d32);color:#0a0a09;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer}.btn.secondary{background:#171819;color:#ddd;border-color:var(--line)}.btn.danger{background:#241313;border-color:#4b2727;color:#efb0b0}.actions{display:flex;gap:8px}.metric{font-size:20px;font-weight:650;margin-top:8px}.mini{font-size:12px;color:var(--muted);margin-top:5px}.bars{height:190px;display:flex;align-items:end;gap:8px;margin-top:20px}.bar{flex:1;background:linear-gradient(180deg,var(--gold),#6e531d);border-radius:6px 6px 2px 2px;min-height:8px}.list{margin-top:14px}.item{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid #202123}.item:last-child{border-bottom:0}.tag{font-size:10px;padding:5px 8px;border-radius:20px;background:#1b1c1d;color:#bcbab5}.table{width:100%;border-collapse:collapse;margin-top:14px}.table th,.table td{text-align:left;padding:13px 8px;border-bottom:1px solid #232527;font-size:13px}.table th{color:#85847f;font-size:10px;letter-spacing:1px;text-transform:uppercase}.empty{text-align:center;padding:35px;color:#777}.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:50}.modal.open{display:flex}.modalbox{width:min(520px,92vw);background:#111213;border:1px solid #373331;border-radius:18px;padding:25px}.form{display:grid;gap:12px;margin-top:18px}.form label{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px}.form input,.form select{width:100%;background:#090a0b;border:1px solid #303235;color:#eee;padding:12px;border-radius:9px;outline:none}.close{border:0;background:transparent;color:#aaa;font-size:22px;cursor:pointer}.page{display:none}.page.active{display:block}.goal{margin-top:17px}.track{height:7px;background:#292a2c;border-radius:9px;overflow:hidden;margin:9px 0}.fill{height:100%;background:linear-gradient(90deg,#9d7728,var(--gold2));border-radius:9px}.mobile-nav{display:none}
+@media(max-width:900px){.sidebar{display:none}.main{margin:0;width:100%;padding:22px 16px 90px}.grid{grid-template-columns:1fr 1fr}.span-3,.span-4,.span-5,.span-6,.span-7,.span-8,.span-12{grid-column:span 2}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#0d0e0f;border-top:1px solid var(--line);z-index:20;justify-content:space-around;padding:8px}.mobile-nav button{background:none;border:0;color:#aaa;font-size:11px}.mobile-nav button.active{color:var(--gold2)}.top{align-items:flex-start}.title{font-size:27px}.profile{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="mark"><span>A</span></div><b>AURYN</b></div>
+  <div class="nav">
+    <button class="active" data-page="dashboard">⌂ &nbsp; Visão geral</button>
+    <button data-page="transactions">↔ &nbsp; Contas & movimentos</button>
+    <button data-page="investments">◈ &nbsp; Investimentos</button>
+    <button data-page="goals">◎ &nbsp; Metas e patrimônio</button>
+    <button data-page="reports">▥ &nbsp; Relatórios</button>
+    <small>Gestão</small>
+    <button data-page="settings">⚙ &nbsp; Configurações</button>
+  </div>
+</aside>
+<main class="main">
+  <div class="top"><div><div class="eyebrow">Private financial management</div><div class="title" id="pageTitle">Visão geral</div></div><div class="profile">Patrimônio • <b id="topNet">R$ 0,00</b></div></div>
+
+  <section id="dashboard" class="page active">
+    <div class="grid">
+      <div class="card span-5"><div class="label">Patrimônio total</div><div class="big gold" id="netWorth">R$ 0,00</div><div class="mini" id="netChange">Inclui contas e investimentos</div></div>
+      <div class="card span-3"><div class="label">Disponível</div><div class="metric" id="cash">R$ 0,00</div><div class="mini">Contas e cartões</div></div>
+      <div class="card span-4"><div class="label">Investimentos</div><div class="metric" id="invested">R$ 0,00</div><div class="mini positive" id="investReturn">+0,00% no período</div></div>
+      <div class="card span-8"><div class="row"><div><div class="label">Fluxo financeiro</div><div class="metric" id="monthBalance">R$ 0,00</div></div><button class="btn" onclick="openModal('transaction')">+ Movimento</button></div><div class="bars" id="bars"></div></div>
+      <div class="card span-4"><div class="row"><div><div class="label">Metas</div><div class="metric" id="goalProgress">0%</div></div><button class="btn secondary" onclick="navigate('goals')">Ver</button></div><div id="goalMini"></div></div>
+      <div class="card span-7"><div class="row"><div><div class="label">Movimentos recentes</div></div><button class="btn secondary" onclick="navigate('transactions')">Ver todos</button></div><div class="list" id="recent"></div></div>
+      <div class="card span-5"><div class="label">Distribuição patrimonial</div><div class="list" id="allocation"></div></div>
+    </div>
+  </section>
+
+  <section id="transactions" class="page">
+    <div class="card span-12"><div class="row"><div><div class="label">Contas e movimentos</div><div class="metric">Controle completo do fluxo</div></div><button class="btn" onclick="openModal('transaction')">+ Adicionar</button></div><table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody id="transactionTable"></tbody></table></div>
+  </section>
+
+  <section id="investments" class="page">
+    <div class="grid">
+      <div class="card span-4"><div class="label">Total investido</div><div class="big gold" id="invTotal">R$ 0,00</div></div>
+      <div class="card span-4"><div class="label">Resultado</div><div class="big positive" id="invGain">R$ 0,00</div></div>
+      <div class="card span-4"><div class="label">Rentabilidade</div><div class="big" id="invPct">0,00%</div></div>
+      <div class="card span-12"><div class="row"><div><div class="label">Carteira</div><div class="metric">Investimentos</div></div><button class="btn" onclick="openModal('investment')">+ Investimento</button></div><table class="table"><thead><tr><th>Ativo</th><th>Classe</th><th>Aplicado</th><th>Atual</th><th>Resultado</th><th></th></tr></thead><tbody id="investmentTable"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="goals" class="page">
+    <div class="card"><div class="row"><div><div class="label">Planejamento</div><div class="metric">Metas financeiras</div></div><button class="btn" onclick="openModal('goal')">+ Nova meta</button></div><div id="goalsList"></div></div>
+  </section>
+
+  <section id="reports" class="page">
+    <div class="grid">
+      <div class="card span-6"><div class="label">Receitas</div><div class="big positive" id="reportIncome">R$ 0,00</div><div class="mini">Total registrado</div></div>
+      <div class="card span-6"><div class="label">Despesas</div><div class="big negative" id="reportExpense">R$ 0,00</div><div class="mini">Total registrado</div></div>
+      <div class="card span-12"><div class="label">Categorias de despesas</div><div class="list" id="categories"></div></div>
+    </div>
+  </section>
+
+  <section id="settings" class="page">
+    <div class="card"><div class="label">Configurações</div><div class="metric">AURYN</div><p class="muted">Os dados deste MVP ficam armazenados localmente neste navegador.</p><div class="actions"><button class="btn danger" onclick="resetData()">Apagar dados locais</button></div></div>
+  </section>
+</main>
+</div>
+<div class="mobile-nav">
+<button class="active" data-page="dashboard">⌂<br>Início</button><button data-page="transactions">↔<br>Movimentos</button><button data-page="investments">◈<br>Investimentos</button><button data-page="goals">◎<br>Metas</button><button data-page="reports">▥<br>Relatórios</button>
+</div>
+
+<div class="modal" id="modal"><div class="modalbox">
+<div class="row"><div class="metric" id="modalTitle">Adicionar</div><button class="close" onclick="closeModal()">×</button></div>
+<form class="form" id="modalForm"></form>
+</div></div>
+
+<script>
+const KEY='auryn_finance_v1';
+const defaultData={
+ transactions:[
+  {id:1,desc:'Pró-labore',cat:'Receitas',date:'2026-08-05',type:'income',value:28500},
+  {id:2,desc:'Cartão — despesas',cat:'Lifestyle',date:'2026-08-06',type:'expense',value:4200},
+  {id:3,desc:'Transferência para investimentos',cat:'Investimentos',date:'2026-08-07',type:'expense',value:8000}
+ ],
+ investments:[
+  {id:1,name:'Tesouro / Renda Fixa',class:'Renda Fixa',applied:350000,current:372500},
+  {id:2,name:'Carteira Global',class:'Exterior',applied:520000,current:548000},
+  {id:3,name:'Ações Brasil',class:'Renda Variável',applied:180000,current:194400}
+ ],
+ goals:[
+  {id:1,name:'Reserva de oportunidades',target:500000,current:325000},
+  {id:2,name:'Patrimônio de longo prazo',target:2000000,current:890000}
+ ]};
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||defaultData;
+const money=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
+const save=()=>localStorage.setItem(KEY,JSON.stringify(data));
+function calc(){let income=data.transactions.filter(x=>x.type==='income').reduce((a,x)=>a+x.value,0),expense=data.transactions.filter(x=>x.type==='expense').reduce((a,x)=>a+x.value,0),inv=data.investments.reduce((a,x)=>a+x.current,0),cash=income-expense;return {income,expense,inv,cash,net:cash+inv};}
+function render(){
+ const c=calc(), applied=data.investments.reduce((a,x)=>a+x.applied,0), gain=c.inv-applied, pct=applied?gain/applied*100:0;
+ ['netWorth','topNet'].forEach(id=>document.getElementById(id).textContent=money(c.net));document.getElementById('cash').textContent=money(c.cash);document.getElementById('invested').textContent=money(c.inv);document.getElementById('investReturn').textContent=(pct>=0?'+':'')+pct.toFixed(2)+'% no período';document.getElementById('monthBalance').textContent=money(c.income-c.expense);
+ document.getElementById('invTotal').textContent=money(c.inv);document.getElementById('invGain').textContent=money(gain);document.getElementById('invPct').textContent=pct.toFixed(2)+'%';
+ document.getElementById('reportIncome').textContent=money(c.income);document.getElementById('reportExpense').textContent=money(c.expense);
+ const goalsTotal=data.goals.reduce((a,g)=>a+g.target,0),goalsCur=data.goals.reduce((a,g)=>a+g.current,0),gp=goalsTotal?goalsCur/goalsTotal*100:0;document.getElementById('goalProgress').textContent=gp.toFixed(0)+'%';
+ document.getElementById('goalMini').innerHTML=data.goals.slice(0,2).map(g=>`<div class="goal"><div class="row"><span>${g.name}</span><span class="muted">${((g.current/g.target)*100).toFixed(0)}%</span></div><div class="track"><div class="fill" style="width:${Math.min(100,g.current/g.target*100)}%"></div></div></div>`).join('');
+ document.getElementById('recent').innerHTML=data.transactions.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(x=>`<div class="item"><div><b>${x.desc}</b><div class="mini">${x.cat} • ${x.date}</div></div><span class="${x.type==='income'?'positive':'negative'}">${x.type==='income'?'+':'-'} ${money(x.value)}</span></div>`).join('')||'<div class="empty">Nenhum movimento.</div>';
+ document.getElementById('transactionTable').innerHTML=data.transactions.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(x=>`<tr><td><b>${x.desc}</b></td><td>${x.cat}</td><td>${x.date}</td><td>${x.type==='income'?'Receita':'Despesa'}</td><td class="${x.type==='income'?'positive':'negative'}">${x.type==='income'?'+':'-'} ${money(x.value)}</td><td><button class="btn secondary" onclick="removeItem('transactions',${x.id})">Excluir</button></td></tr>`).join('');
+ document.getElementById('investmentTable').innerHTML=data.investments.map(x=>`<tr><td><b>${x.name}</b></td><td>${x.class}</td><td>${money(x.applied)}</td><td>${money(x.current)}</td><td class="positive">${money(x.current-x.applied)}</td><td><button class="btn secondary" onclick="removeItem('investments',${x.id})">Excluir</button></td></tr>`).join('');
+ document.getElementById('goalsList').innerHTML=data.goals.map(g=>`<div class="item" style="display:block"><div class="row"><div><b>${g.name}</b><div class="mini">${money(g.current)} de ${money(g.target)}</div></div><button class="btn secondary" onclick="removeItem('goals',${g.id})">Excluir</button></div><div class="track"><div class="fill" style="width:${Math.min(100,g.current/g.target*100)}%"></div></div></div>`).join('')||'<div class="empty">Crie sua primeira meta.</div>';
+ const cats={};data.transactions.filter(x=>x.type==='expense').forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.value);const total=c.expense||1;document.getElementById('categories').innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="item"><span>${k}</span><span><b>${money(v)}</b> <span class="muted">${(v/total*100).toFixed(0)}%</span></span></div>`).join('')||'<div class="empty">Nenhuma despesa registrada.</div>';
+ const vals=[55,72,48,85,63,91,78,100,88,92,96,105];document.getElementById('bars').innerHTML=vals.map(v=>`<div class="bar" style="height:${v}%"></div>`).join('');
+ const alloc=[['Investimentos',c.inv,'gold'],['Disponível',Math.max(0,c.cash),'positive']];document.getElementById('allocation').innerHTML=alloc.map(([n,v])=>`<div class="item"><span>${n}</span><b class="${v<0?'negative':'gold'}">${money(v)}</b></div>`).join('');
+}
+function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(page).classList.add('active');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));const titles={dashboard:'Visão geral',transactions:'Contas e movimentos',investments:'Investimentos',goals:'Metas e patrimônio',reports:'Relatórios',settings:'Configurações'};document.getElementById('pageTitle').textContent=titles[page];}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
+function openModal(type){const f=document.getElementById('modalForm'),title=document.getElementById('modalTitle');document.getElementById('modal').classList.add('open');
+ if(type==='transaction'){title.textContent='Novo movimento';f.innerHTML=`<label>Descrição<input id="desc" required placeholder="Ex.: Aluguel, salário, viagem"></label><label>Categoria<input id="cat" required placeholder="Ex.: Moradia, Lifestyle, Receitas"></label><label>Data<input id="date" type="date" value="${new Date().toISOString().slice(0,10)}" required></label><label>Tipo<select id="type"><option value="income">Receita</option><option value="expense">Despesa</option></select></label><label>Valor<input id="value" type="number" min="0" step="0.01" required></label><button class="btn" type="submit">Salvar movimento</button>`;f.onsubmit=e=>{e.preventDefault();data.transactions.push({id:Date.now(),desc:desc.value,cat:cat.value,date:date.value,type:type.value,value:+value.value});save();closeModal();render();};}
+ if(type==='investment'){title.textContent='Novo investimento';f.innerHTML=`<label>Ativo<input id="name" required placeholder="Ex.: Fundo, ação, imóvel"></label><label>Classe<input id="className" required placeholder="Ex.: Renda Fixa"></label><label>Valor aplicado<input id="applied" type="number" min="0" step="0.01" required></label><label>Valor atual<input id="current" type="number" min="0" step="0.01" required></label><button class="btn" type="submit">Salvar investimento</button>`;f.onsubmit=e=>{e.preventDefault();data.investments.push({id:Date.now(),name:name.value,class:className.value,applied:+applied.value,current:+current.value});save();closeModal();render();};}
+ if(type==='goal'){title.textContent='Nova meta';f.innerHTML=`<label>Nome da meta<input id="name" required placeholder="Ex.: Compra de imóvel"></label><label>Valor objetivo<input id="target" type="number" min="0" step="0.01" required></label><label>Valor já acumulado<input id="current" type="number" min="0" step="0.01" value="0" required></label><button class="btn" type="submit">Criar meta</button>`;f.onsubmit=e=>{e.preventDefault();data.goals.push({id:Date.now(),name:name.value,target:+target.value,current:+current.value});save();closeModal();render();};}
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function removeItem(type,id){data[type]=data[type].filter(x=>x.id!==id);save();render()}
+function resetData(){if(confirm('Apagar todos os dados deste navegador?')){localStorage.removeItem(KEY);data=JSON.parse(JSON.stringify(defaultData));save();render();}}
+render();
+</script>
+</body>
+</html>

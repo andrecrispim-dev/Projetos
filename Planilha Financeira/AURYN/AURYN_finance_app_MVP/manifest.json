@@ -1,0 +1,9 @@
+{
+  "name":"AURYN — Gestão Financeira",
+  "short_name":"AURYN",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#08090a",
+  "theme_color":"#0b0b0c",
+  "icons":[]
+}

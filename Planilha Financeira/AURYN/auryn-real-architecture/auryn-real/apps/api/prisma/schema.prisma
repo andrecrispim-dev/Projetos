@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum InvestmentClass {
+  FIXED_INCOME
+  EQUITY
+  FUND
+  REAL_ESTATE
+  EXTERIOR
+  OTHER
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  accounts     Account[]
+  transactions Transaction[]
+  investments  Investment[]
+  goals        Goal[]
+  sessions     Session[]
+  auditLogs    AuditLog[]
+}
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  refreshHash  String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  user          User     @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([userId])
+}
+model Account {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  institution String?
+  balance   Decimal  @db.Decimal(18,2) @default(0)
+  currency  String   @default("BRL")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  transactions Transaction[]
+  @@index([userId])
+}
+model Transaction {
+  id          String @id @default(cuid())
+  userId      String
+  accountId   String?
+  description String
+  category    String
+  type        TransactionType
+  amount      Decimal @db.Decimal(18,2)
+  occurredAt  DateTime
+  createdAt   DateTime @default(now())
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  account Account? @relation(fields:[accountId], references:[id], onDelete:SetNull)
+  @@index([userId, occurredAt])
+}
+model Investment {
+  id        String @id @default(cuid())
+  userId    String
+  name      String
+  class     InvestmentClass
+  invested  Decimal @db.Decimal(18,2)
+  current   Decimal @db.Decimal(18,2)
+  currency  String @default("BRL")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([userId])
+}
+model Goal {
+  id        String @id @default(cuid())
+  userId    String
+  name      String
+  target    Decimal @db.Decimal(18,2)
+  current   Decimal @db.Decimal(18,2) @default(0)
+  deadline  DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([userId])
+}
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  ip        String?
+  createdAt DateTime @default(now())
+  user User? @relation(fields:[userId], references:[id], onDelete:SetNull)
+  @@index([userId, createdAt])
+}

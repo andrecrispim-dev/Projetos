@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "AURYN",
+    "slug": "auryn",
+    "version": "0.1.0",
+    "scheme": "auryn",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "bundleIdentifier": "com.auryn.finance"
+    },
+    "android": {
+      "package": "com.auryn.finance"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
+  }
+}
